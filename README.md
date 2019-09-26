@@ -43,7 +43,7 @@ Structured materials helped to refresh some gaps (example, with rebasing :)
     
     **Heap** - 55f16c1b6000-55f16c1d7000, **Stack** - 7ffddb215000-7ffddb236000, **MMS** - 7fd078843000-7fd078a2a000.
     
-```md
+```
 alaty@quebec:~/Desktop/kottans-backend$ ps -a | grep pycharm
  8536 tty2     00:00:00 pycharm.sh
 alaty@quebec:~/Desktop/kottans-backend$ cat /proc/8536/maps
@@ -75,3 +75,233 @@ we need to keep in mind how memory is used and which problem can occur in case o
 leaks and other possible problems. Tasks contain description of different memory segments, what type of data
 is stored there, which errors occur in case of using more memory than allowed. 
 P.S. I have a new goal - be better in understanding of memory usage. It is task for future improvement :)
+
+
+## Http & Https
+Additional tasks:
+1. List repositories of "Kottans" organization:
+    ```
+    curl -i https://api.github.com/orgs/kottans/repos
+   ```
+
+2. Create new issue in my repository:
+    ```
+    curl -i -u AnastasiiaLatysh -d '{"title": "Kottans backend issue", "body": "Http & Https",
+    "labels": ["bug"] }' https://api.github.com/repos/AnastasiiaLatysh/kottans-backend/issues
+    ```
+Questions:
+1. Name at least three possible negative consequences of not using https:
+     - server is not authenticated;
+     - data transmission is not encrypted;
+     - absence of protecting the exchanges from tampering.
+
+2. Explain the main idea behind public key cryptography in few sentences.
+
+    Public key cryptography is an encryption technique that uses a paired public and private key (or asymmetric key)
+    algorithm for secure data communication. A message sender uses a recipient's public key to encrypt a message.
+    To decrypt the sender's message, only the recipient's private key may be used.
+
+3. You are creating and application for pet clinic. You need to implement the following functionality:
+    
+    - Add new pet (including name, age, breed, owner's name, medical history)
+    
+        **Request**
+        
+        POST /api/v1/pet/
+        
+        <details>
+        <summary>Request body</summary>
+        
+        ```
+        {
+        "name": "Jack",
+        "age": 2,
+        "breed": "labrador",
+        "owner_name": "Alica",
+        "medical_history": ""
+        }
+        ```
+        </details>
+        
+        **Response**
+        
+        Status code: 201 - Created
+        
+        <details>
+        <summary>Response body</summary>
+        
+        ```
+        {
+        "id": 1,
+        "name": "Jack",
+        "age": 2,
+        "breed": "labrador",
+        "owner_name": "Alica",
+        "medical_history": ""
+        }
+        ```
+        </details>
+    
+    - Search pet by name
+    
+        **Request**
+        
+        GET /api/v1/pet/?name=Jack
+        
+        **Response**
+        
+        Status code: 200 - OK
+        
+        <details>
+        <summary>Response body</summary>>
+        
+        ```
+        {
+        "id": 1,
+        "name": "Jack",
+        "age": 2,
+        "breed": "labrador",
+        "owner_name": "Alica",
+        "medical_history": ""
+        }
+        ```
+        </details>
+    
+    - Change name of an existing pet
+    
+        **Request**
+        
+        PUT /api/v1/pet/
+        
+        <details>
+        <summary>Request body</summary>
+        
+        ```
+        {
+        "id": 1,
+        "name": "New Jack"
+        }
+        ```
+        </details>
+        
+        **Response**
+        
+        Status code: 200 - OK
+        
+        <details>
+        <summary>Response body</summary>
+        
+        ```
+        {
+        "id": 1,
+        "name": "New Jack",
+        "age": 2,
+        "breed": "labrador",
+        "owner_name": "Alica",
+        "medical_history": ""
+        }
+        ```
+        </details>
+    
+    - Add new info about pet's health
+    
+        **Request**
+        
+        PUT /api/v1/pet/
+        
+        <details>
+        <summary>Request body</summary>
+        
+        ```
+        {
+        "id": 1,
+        "medical_history": "New Jack is healthy"
+        }
+        ```
+        </details>
+        
+        **Response**
+        
+        Status code: 200 - OK
+        
+        <details>
+        <summary>Response body</summary>
+        
+        ```
+        {
+        "id": 1,
+        "name": "New Jack",
+        "age": 2,
+        "breed": "labrador",
+        "owner_name": "Alica",
+        "medical_history": "New Jack is healthy"
+        }
+        ```
+        </details>
+    
+    - Assign a pet to a particular doctor in the clinic
+    
+        **Request**
+        
+        POST /api/v1/vet/1/pet/
+        
+        <details>
+        <summary>Request body</summary>
+        
+        ```
+        {"pet_ids": [1]}
+        ```
+        </details>
+        
+        **Response**
+        
+        Status code: 201 - Created
+        
+        <details>
+        <summary>Response body</summary>
+        
+        ```
+        {
+        "id": 1,
+        "vet_name": "Doctor Aibolit",
+        "pet_ids": [1]
+        }
+        ```
+        </details>
+    
+    - Register an appointment for a pet. This request should include info about pet, doctor and appointment date and time.
+    
+        **Request**
+        
+        POST /api/v1/appointment/
+        
+        <details>
+        <summary>Request body</summary>
+        
+        ```
+        {
+        "vet_id": 1,
+        "pet_id": 1,
+        "date": "2019-10-01",
+        "time": "14:00"
+        }
+        ```
+        </details>
+        
+        Response
+        
+        Status code: 201 - Created
+        
+        <details>
+        <summary>Response body</summary>
+        
+        ```
+        {
+        "id": 1,
+        "vet_id": 1,
+        "pet_id": 1,
+        "date": "2019-10-01",
+        "time": "14:00"
+        }
+        ```
+        </details>
